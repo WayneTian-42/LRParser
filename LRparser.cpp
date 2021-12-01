@@ -22,20 +22,19 @@ private:
     inline std::vector<std::string> split(const std::string &str, const char delim);
 
 private:
-    // std::unordered_map<char, std::vector<int>> gramap;
     std::unordered_map<int, std::string> grammar;
     std::unordered_map<char, int> non, ter;
     std::vector<std::vector<std::string>> Action;
     std::vector<std::vector<int>> Goto;
 };
 
-int main(/*int argc, char *argv[]*/)
+int main(int argc, char *argv[])
 {
-    // if (argc != 2)
-    //     std::runtime_error("Error: Need 2 parameters\n");
+    if (argc != 2)
+        std::runtime_error("Error: Need 2 parameters\n");
     LRParser parser;
-    // parser.readFromFile(argv[1]);
-    parser.readFromFile("test1.in");
+    parser.readFromFile(argv[1]);
+    // parser.readFromFile("test.in");
     std::string input;
     std::cout << "Please enter the symbols:" << std::endl;
     std::cin >> input;
@@ -49,13 +48,11 @@ void LRParser::readFromFile(const std::string &fileName)
     fileIn.open(fileName);
     int num;
     fileIn >> num;
-    for (int i = 1; i <= num; i++)
-    {
+    for (int i = 0; i < num; i++)
         fileIn >> grammar[i];
-    }
     int terNum;
     fileIn >> terNum;
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < terNum; i++)
     {
         char tmp;
         fileIn >> tmp;
@@ -72,9 +69,7 @@ void LRParser::readFromFile(const std::string &fileName)
         getline(fileIn, line);
         tmp = split(line, ',');
         for (int j = 0; j < (int)ter.size(); j++)
-        {
             Action[i][j] = tmp[j];
-        }
     }
     int nonNum;
     fileIn >> nonNum;
@@ -93,10 +88,8 @@ void LRParser::readFromFile(const std::string &fileName)
         getline(fileIn, line);
         tmp = split(line, ',');
         for (int j = 0; j < (int)nonNum; j++)
-        {
             if (!tmp[j].empty())
                 Goto[i][j] = std::stoi(tmp[j]);
-        }
     }
 }
 
@@ -154,6 +147,9 @@ void LRParser::predictAnalysis(std::string &input)
         }
         else
         {
+            output(state, 20);
+            output(symbol, 20);
+            printf("%-20s", cutStr(input, ip).c_str());
             printf("Error\n");
             return;
         }
@@ -175,7 +171,8 @@ inline void LRParser::output(const std::vector<int> &out, int len)
     {
         if (i < (int)out.size())
         {
-            printf("%d", out[i]);
+            printf("%d ", out[i]);
+            len--;
             if (out[i] >= 10)
                 len -= int(log10(out[i]));
         }
