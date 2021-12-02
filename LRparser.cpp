@@ -11,21 +11,20 @@
 class LRParser
 {
 public:
-    void readFromFile(const std::string &fileName);
-    // void generateTable();
-    void predictAnalysis(std::string &input);
+    void readFromFile(const std::string &fileName); // 从文件中获取预测分析表
+    void predictAnalysis(std::string &input); // 进行预测分析
 
 private:
     inline std::string cutStr(const std::string &str, int pos); // 对字符串进行切片, 便于从指定位置开始输出
-    inline void output(const std::vector<int> &out, int len);
-    inline void output(const std::vector<char> &out, int len);
-    inline std::vector<std::string> split(const std::string &str, const char delim);
+    inline void output(const std::vector<int> &out, int len); // 从指定位置按格式输出vector<int>
+    inline void output(const std::vector<char> &out, int len); // 从指定位置按格式输出vector<char>
+    inline std::vector<std::string> split(const std::string &str, const char delim); // 根据指定字符切割字符串
 
 private:
-    std::unordered_map<int, std::string> grammar;
-    std::unordered_map<char, int> non, ter;
-    std::vector<std::vector<std::string>> Action;
-    std::vector<std::vector<int>> Goto;
+    std::unordered_map<int, std::string> grammar; // 文法，编号与产生式对应
+    std::unordered_map<char, int> non, ter; // 终结符与非终结符，与编号对应
+    std::vector<std::vector<std::string>> Action; // Action子表
+    std::vector<std::vector<int>> Goto; // Goto子表
 };
 
 int main(int argc, char *argv[])
@@ -34,7 +33,6 @@ int main(int argc, char *argv[])
         std::runtime_error("Error: Need 2 parameters\n");
     LRParser parser;
     parser.readFromFile(argv[1]);
-    // parser.readFromFile("test.in");
     std::string input;
     std::cout << "Please enter the symbols:" << std::endl;
     std::cin >> input;
