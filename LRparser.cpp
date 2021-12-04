@@ -92,6 +92,14 @@ void LRParser::predictAnalysis(std::string &input)
     {
         int topS = state.back();
         char now = input[ip];
+        if (ter.find(now) == ter.end())
+        {
+            output(state, 30);
+            std::cout << std::setw(20) << std::left << symbol;
+            printf("%-20s", cutStr(input, ip).c_str());
+            printf("Error: symbol %c is invalid\n", now);
+            return;
+        }
         if (Action[topS][ter[now]][0] == 'S')
         {
             int ord = std::stoi(cutStr(Action[topS][ter[now]], 1));
